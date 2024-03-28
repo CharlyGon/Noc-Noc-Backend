@@ -6,7 +6,7 @@
     <title>Bienvenido a nuestra plataforma</title>
 </head>
 <body>
-    <p>Hola {{ $newUser->name }},</p>
+    <p>Hola {{ $newUser->name }}!,</p>
     <p>Bienvenido a nuestra plataforma. A continuación, te proporcionamos tus credenciales de inicio de sesión:</p>
     <ul>
         <li><strong>Correo electrónico:</strong> {{ $newUser->email }}</li>

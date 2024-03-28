@@ -41,11 +41,8 @@ class ForgotPasswordController extends Controller
             $token = $this->passwordResetService->createResetToken($request->email);
             $resetUrl = URL::to("/reset-password?token=$token&email=" . urlencode($request->email));
 
-            // Construir el URL de restablecimiento con el token.
-            $resetUrl = URL::to("/reset-password?token=$token&email=" . urlencode($request->email));
-
             // Enviar el correo electrónico personalizado.
-            Mail::to($request->email)->send(new ResetPasswordMail($resetUrl));
+            Mail::to($request->email)->send(new ResetPasswordMail($resetUrl, $user));
 
             return response()->json(['message' => 'Password reset link sent successfully.']);
         } catch (\Exception $e) {
