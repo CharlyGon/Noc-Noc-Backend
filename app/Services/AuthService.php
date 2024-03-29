@@ -8,7 +8,7 @@ class AuthService
 {
     /**
      * Check if the user is an admin.
-     * 
+     *
      * @param User $user
      * @return bool
      */
