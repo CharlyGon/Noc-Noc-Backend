@@ -31,4 +31,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'frontend' => [
+        'reset_password_url' => env('FRONTEND_RESET_PASSWORD_URL', 'default_value'),
+    ],
+
 ];
