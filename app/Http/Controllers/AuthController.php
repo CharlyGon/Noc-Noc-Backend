@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeMail;
 
+
 class AuthController extends Controller
 {
     protected $userService;
@@ -49,7 +50,6 @@ class AuthController extends Controller
 
             return response()->json([
                 'message' => 'User successfully registered',
-                'user' => $user,
             ]);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error registering user: ' . $e->getMessage()], 500);
@@ -73,9 +73,13 @@ class AuthController extends Controller
             if (Auth::attempt($credentials)) {
                 $user = Auth::user();
                 $token = $this->jwtService->generateToken($user);
+                $shouldChangePassword = is_null($user->password_changed_at) ||
+                    $user->password_changed_at->diffInDays(now()) > 90;
+
 
                 return response()->json([
                     'access_token' => $token,
+                    'should_change_password' => $shouldChangePassword,
                     'message' => 'Login successful'
                 ]);
             }

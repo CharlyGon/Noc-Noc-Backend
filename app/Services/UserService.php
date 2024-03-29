@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class UserService
@@ -19,11 +20,17 @@ class UserService
     {
         try {
             $randomPassword = Str::random(10);
-            return User::create([
+            $newUser = User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => Hash::make($randomPassword),
             ]);
+
+            Log::info ('password hash: ' . $newUser->password);
+            Log::info ('passwor Randon: ' . $randomPassword);
+            $newUser->password = $randomPassword;
+
+            return $newUser;
         } catch (\Exception $e) {
             throw new \Exception("Error al crear el usuario: " . $e->getMessage());
         }
