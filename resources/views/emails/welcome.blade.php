@@ -14,5 +14,7 @@
     </ul>
     <p>Te recomendamos cambiar tu contraseña después de iniciar sesión por primera vez.</p>
     <p>¡Disfruta tu experiencia en nuestra plataforma!</p>
+
+    <p>Regards,<br>Gonzalo Fernández</p>
 </body>
 </html>

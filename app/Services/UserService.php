@@ -96,6 +96,7 @@ class UserService
         try {
             if (isset($data['password'])) {
                 $data['password'] = Hash::make($data['password']);
+                $data['password_changed_at'] = now();
             }
 
             $user->update($data);

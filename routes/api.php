@@ -34,6 +34,7 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink
 Route::post('/reset-password', [ResetPasswordController::class, 'updatePassword'])->name('password.update');
 
 Route::middleware('jwt')->group(function () {
+    Route::post('/change-password', [ResetPasswordController::class, 'changePassword'])->name('password.change');
     Route::get('/tasks', [TaskController::class, 'index']);
     Route::get('/comments', [CommentController::class, 'index']);
     Route::post('/comments', [CommentController::class, 'create']);
