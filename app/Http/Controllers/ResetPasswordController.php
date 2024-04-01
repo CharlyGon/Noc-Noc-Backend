@@ -79,7 +79,7 @@ class ResetPasswordController extends Controller
                 'password' => $request->new_password,
             ], $user);
 
-            return response()->json(['message' => 'Contraseña actualizada con éxito']);
+            return response()->json(['message' => 'Contraseña actualizada con éxito'],200);
         } catch (\Exception $e) {
             Log::error('Error al cambiar la contraseña: ' . $e->getMessage(), ['exception' => $e]);
             return response()->json(['error' => 'Error al cambiar la contraseña'], 500);
