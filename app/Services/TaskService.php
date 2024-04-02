@@ -18,9 +18,22 @@ class TaskService
     public function createTask(array $data): Task
     {
         try {
+            // Primero, obtén el nombre del usuario asignado usando el ID proporcionado.
+            $assignedUserName = null; // Asume un valor por defecto de null.
+            if (isset($data['assigned_to'])) {
+                $user = User::find($data['assigned_to']);
+                if ($user) {
+                    $assignedUserName = $user->name; // Obtiene el nombre si el usuario existe.
+                }
+            }
+
+            // Crea la tarea con todos los datos, incluyendo el nombre del usuario asignado.
             return Task::create([
                 'title' => $data['title'],
                 'description' => $data['description'],
+                'status' => $data['status'] ?? 'Pendiente',
+                'assigned_to' => $data['assigned_to'],
+                'assigned_to_name' => $assignedUserName, // Incluye el nombre del usuario asignado.
                 'created_by' => Auth::id(),
             ]);
         } catch (Exception $e) {

@@ -51,6 +51,8 @@ class TaskController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'status' => 'nullable|string|in:Pendiente,En proceso,Bloqueado,Completado',
+            'assigned_to' => 'required|exists:users,id',
         ]);
 
         try {
