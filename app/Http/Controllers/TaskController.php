@@ -10,6 +10,7 @@ use App\Services\ReportService;
 use Carbon\Carbon;
 
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 class TaskController extends Controller
 {
@@ -69,7 +70,7 @@ class TaskController extends Controller
      * @param Task $task
      * @return JsonResponse
      */
-    public function update(Request $request, Task $task)//!hay que revisar esta mal
+    public function update(Request $request, Task $task)
     {
         try {
             $validatedData = $request->validate([
@@ -94,6 +95,41 @@ class TaskController extends Controller
     }
 
     /**
+     * Update the status of a task.
+     *
+     * @param Request $request
+     * @param Task $task
+     * @return JsonResponse
+     */
+    public function updateStatus(Request $request, Task $task)
+    {
+        try {
+            $user = auth()->user();
+
+            Log::info('User: ' . $user);
+
+            if (!$user) {
+                // Manejar el caso de no autenticación según tu lógica de negocio
+                return response()->json(['error' => 'User not authenticated'], 401);
+            }
+
+            $validatedData = $request->validate([
+                'status' => 'required|string|in:Pendiente,En proceso,Bloqueado,Completado',
+            ]);
+
+            $updatedTask = $this->taskService->updateTaskStatus($task, $validatedData['status'], $user);
+
+            return response()->json([
+                'message' => 'Task status updated successfully',
+                'task' => $updatedTask,
+            ]);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Failed to update task status: ' . $e->getMessage()], 500);
+        }
+    }
+
+
+    /**
      * Delete a task.
      *
      * @param Task $task
@@ -115,7 +151,7 @@ class TaskController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function generateReport(Request $request)//!hay que  revisar el tema de las fechas
+    public function generateReport(Request $request) //!hay que  revisar el tema de las fechas
     {
         try {
             // // Validar los datos de entrada, como las fechas de inicio y fin

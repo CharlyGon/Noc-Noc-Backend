@@ -23,9 +23,7 @@ use App\Http\Controllers\UserController;
 Route::middleware(['jwt', 'admin'])->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/create-tasks', [TaskController::class, 'create']);
-    Route::put('/tasks/{task}', [TaskController::class, 'update']);
     Route::delete('/tasks/{task}', [TaskController::class, 'delete']);
-    Route::post('/attachments', [AttachmentController::class, 'store']);
     Route::get('/attachments/{attachment}', [AttachmentController::class, 'show']);
     Route::get('/get-all-users', [UserController::class, 'index']);
 });
@@ -37,10 +35,12 @@ Route::post('/reset-password', [ResetPasswordController::class, 'updatePassword'
 Route::get('/tasks', [TaskController::class, 'index']);
 
 Route::middleware('jwt')->group(function () {
+    Route::put('/tasks/{task}/status', [TaskController::class, 'updateStatus']);
     Route::post('/change-password', [ResetPasswordController::class, 'changePassword'])->name('password.change');
     Route::get('/comments', [CommentController::class, 'index']);
     Route::post('/comments', [CommentController::class, 'create']);
     Route::put('/comments/{comment}', [CommentController::class, 'update']);
     Route::delete('/comments/{comment}', [CommentController::class, 'delete']);
     Route::get('/generate-report', [TaskController::class, 'generateReport']);
+    Route::post('/attachments', [AttachmentController::class, 'store']);
 });

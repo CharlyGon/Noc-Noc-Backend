@@ -44,13 +44,18 @@ class CommentController extends Controller
     {
         $user = Auth::user();
 
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no autenticado'], 401);
+        }
+
         $validatedData = $request->validate([
             'task_id' => 'required|integer',
-            'content' => 'required|string',
+            'body' => 'required|string',
         ]);
 
+        $validatedData['user_id'] = $user->id;
+
         try {
-            $validatedData['user_id'] = $user->id;
             $comment = $this->commentService->createComment($validatedData);
             return response()->json(['message' => 'Comment created successfully', 'comment' => $comment]);
         } catch (Exception $e) {

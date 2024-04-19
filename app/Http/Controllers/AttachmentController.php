@@ -56,7 +56,7 @@ class AttachmentController extends Controller
 
         try {
             $attachment = $this->attachmentService->storeAttachment($taskId, $userId, $file);
-            return response()->json(['message' => 'Attachment stored successfully', 'attachment' => $attachment]);
+            return response()->json(['message' => 'Attachment stored successfully', 'attachment' => $attachment], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to store attachment: ' . $e->getMessage()], 500);
         }

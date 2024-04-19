@@ -16,10 +16,13 @@ class CommentService
     {
         try {
             return Comment::create($data);
+        } catch (\Illuminate\Database\QueryException $e) {
+            throw new \Exception("Error al crear el comentario: " . $e->getMessage());
         } catch (\Exception $e) {
             throw new \Exception("Error al crear el comentario: " . $e->getMessage());
         }
     }
+
 
     /**
      * Get all comments.
@@ -58,7 +61,9 @@ class CommentService
     public function getCommentsForTask($taskId)
     {
         try {
-            return Comment::where('task_id', $taskId)->get();
+            return Comment::where('task_id', $taskId)
+                ->orderBy('created_at', 'desc')
+                ->get();
         } catch (\Exception $e) {
             throw new \Exception("Error al obtener los comentarios de la tarea: " . $e->getMessage());
         }
